@@ -1,0 +1,60 @@
+# sesion 2 modulo 5 -- Probabilidad --
+
+#calcular pribabilidades simples, conjuntas y condicionales.
+# visualizar diderencia estadistica
+
+import pandas as pd, numpy as np, matplotlib as plt, seaborn as sns
+#data
+url = "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/tips.csv"
+tips = pd.read_csv(url)
+#  guardamos DataFrame en un csv
+tips.to_csv("input/tips_original.csv", index=False)
+
+#construir dos grupos de observaciones
+#Grupo 1: propina ideal (determinístico) = 15% de la cuenta
+tips_det = tips.copy
+#print(tips.head(10))
+
+#Construir  dos grupos de observaciones
+# Grupo 1 Propina ideal (determinístico) = 15% de la cuenta
+tips_det = tips.copy()
+tips_det['tip'] = (tips_det['total_bill'] * 0.15).round(2)  # Redondear a dos decimales
+tips_det['Experiment'] = "Deterministico"
+ 
+#Grupo 2 propina real (observaciones reales)
+tips_ran = tips.copy()
+tips_ran['Experiment'] = "Aleatorio" #Fenomeno con incertidumbre
+ 
+#Unir ambos grupos
+df = pd.concat([tips_det, tips_ran], ignore_index=True)
+#Guardar el DataFrame combinado en un archivo CSV
+df.to_csv("input/tips_combined.csv", index=False)
+ 
+#Probalidad Basica
+#Definir el espacio muestral y eventos medibles
+#Espacio muestral: Todas las observaciones de propinas
+# A: Eventos medibles: Propinas mayores a 5
+# B: Eventos medibles: consumo realizado en domingo (sun)
+S = df["Experiment"].unique  # # Espacio muestral
+A = df["tip"] >= 5 # Evento A: Propinas mayores
+B = df["day"] == "Sun"  # Evento B: Consumo realizado
+# Calcular probabilidades simples
+P_A = A.mean()  # Probabilidad de A P(A)= numero de propinas mayores a 5 / total de propinas
+P_B = B.mean()  # Probabilidad de B P(B)= numero de consumos realizados en domingo / total de consumos
+print(f"Probabilidad de A (Propinas mayores a 5): {P_A:.2f}")
+print(f"Probabilidad de B (Consumo realizado en domingo): {P_B:.2f}")   
+# Calcular probabilidades conjuntas
+P_AyB = (A & B).mean()  # Probabilidad de A y B #P(A ∩ B)= numero de propinas mayores a 5 y consumos realizados en domingo / total de consumos
+print(f"Probabilidad de A y B (Propinas mayores a 5 y consumo en domingo): {P_AyB:.2f}")
+P_A_B = (A & B).sum()/B.sum() # Probabilidad de A dado B #P(A | B) = numero de propina alta en Domingp/ Total de domingo
+print(f"Probabilidad de A dado B (Propinas mayores a 5 dado consumo en domingo): {P_A_B:.2f}")
+# Visualizar la diferencia entre el experimento determinístico y aleatorio
+plt.figure(figsize=(12, 6))
+sns.boxplot(x='Experiment', y='tip', data=df)
+plt.title('Comparación de Propinas: Determinístico vs Aleatorio')
+plt.xlabel('Experimento')
+plt.ylabel('Propina')
+plt.grid(True)
+plt.savefig("output/boxplot_propinas.png")
+plt.show()
+ 
