@@ -6,13 +6,14 @@ En esta actividad, generarás y analizarás datos simulados para explorar la rel
 variables utilizando herramientas estadísticas y visualización en Python
 
 """
+# Importar las bibliotecas necesarias
 import numpy as np
 import pandas as pd
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from scipy.stats import pearsonr
-
+import zipfile
 # 1. Creación de Datos Simulados
 # Generar dos listas de datos numéricos simulados que representen variables relacionadas
 np.random.seed(42)
@@ -40,3 +41,10 @@ coef_pearson, p_value = pearsonr(horas_ejercicio, presion_arterial)
 
 # Mostrar resultados
 coef_pearson, p_value, tabla_contingencia.head()
+
+# Guardar resultados en un archivo zip
+with zipfile.ZipFile('actividad_S3M4.zip', 'w') as z:
+    z.write('actividad_S3M4.py')
+    z.writestr('coeficiente_pearson.txt', f'Coeficiente de Pearson: {coef_pearson}\nValor p: {p_value}')
+    z.writestr('tabla_contingencia.csv', tabla_contingencia.to_csv())
+    z.write('graficas/grafico_S3M4.png')
