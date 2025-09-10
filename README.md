@@ -11,5 +11,6 @@ Módulo 7: Aprendizaje de Máquina No Supervisado.\
 Módulo 8: Fundamentos de Deep Learning.\
 Módulo 9: Fundamentos de Big Data.\
 Módulo 10: Desarrollo de Portafolio para Especialidades.\
-Módulo 11: Desarrollo de Empleabilidad en la Industria Digital.\
+Módulo 11: Desarrollo de Empleabilidad en la Industria Digital.
+
 
